@@ -7,19 +7,26 @@ from typing import Annotated, Literal, Dict
 from dotenv import load_dotenv
 import os
 
-from langchain_openai import AzureChatOpenAI
+from langchain_openai import AzureChatOpenAI, ChatOpenAI
 from langchain_core.messages import ToolMessage
 
 from tools import wifi_tools
 
 load_dotenv()
 
-chatbot = AzureChatOpenAI(
-    azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"),
-    api_key=os.getenv("AZURE_OPENAI_API_KEY"),
-    api_version=os.getenv("AZURE_OPENAI_API_VERSION"),
-    deployment_name=os.getenv("AZURE_OPENAI_LLM_4"),
+# chatbot = AzureChatOpenAI(
+#     azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"),
+#     api_key=os.getenv("AZURE_OPENAI_API_KEY"),
+#     api_version=os.getenv("AZURE_OPENAI_API_VERSION"),
+#     deployment_name=os.getenv("AZURE_OPENAI_LLM_4"),
+# )
+
+chatbot = ChatOpenAI(
+    api_key=os.getenv('OPENAI_API_KEY'),
+    base_url=os.getenv('OPENAI_API_BASE'),
+    model="gpt-4o-mini",
 )
+
 
 chatbot_with_tools = chatbot.bind_tools(wifi_tools.values())
 
